@@ -1,40 +1,34 @@
+import { createStore } from "redux";
 
-/*
-//Core, how changes detected in React, Redux and other state management libaries
-let state = { count: 0 };
-let prevState = state;
-function increment() {
-    // Mutating State 
-    // state.count++; //prevState = 3, state = 3
+const initialState = { post: 0, name: "Ravi Verma" };
 
-    //Non-Mutating State
-    state = { count: state.count + 1 } //prevState = 0, state = 3
-}
-*/
+const INCREMENT = "post/increment";
+const DECREMENT = "post/decrement";
+const INCREASE_BY = "post/incrementBy";
+const DECREASE_BY = "post/decrementBy";
 
-let reduxState = { post: 1,  name: "Ravi Verma",  age: 19 };
-
-//Why Reducer name? Why not State Updater?
-//Reducer - state and action ko lekar, logic perform karkae, ek value retun karana - that's why name - reducer 
-//Facts: Same as Reduce method on array in JS. Same work, array lekar ek value retrun karana
-function reducer(state, action) {
-    if (action.type == "post/increment") {
-        return { ...state, post: state.post + 1 };
-    } else if (action.type == "post/decrement") {
-        return { ...state, post: state.post - 1 };
-    }else if(action.type == "post/incrementBy"){
-        return {...state, post: state.post + action.payload}
-    }else if(action.type == "post/decrementBy"){
-        return {...state, post: state.post - action.payload}
-    }
-    return state;
+function reducer(state = initialState, { type, payload }) {
+  switch (type) {
+    case INCREMENT:
+      return { ...state, post: state.post + 1 };
+    case DECREMENT:
+      return { ...state, post: state.post - 1 };
+    case INCREASE_BY:
+      return { ...state, post: state.post + payload };
+    case DECREASE_BY:
+      return { ...state, post: state.post + payload };
+    default:
+      return state;
+  }
 }
 
-//WHat Redux will Do behind the scenes
-// reduxState = reducer(reduxState, { type: "post/increment" })
-// reduxState = reducer(reduxState, { type: "post/decrement" })
-// reduxState = reducer(reduxState, { type: "post/square" })
-reduxState = reducer(reduxState, {type: "post/incrementBy", payload: 10});
-console.log(reduxState);
-reduxState = reducer(reduxState, {type: "post/decrementBy", payload: 10});
-console.log(reduxState);
+let store = createStore(reducer);
+
+console.log(store);
+
+store.subscribe(() => {
+  console.log(store.getState());
+});
+
+store.dispatch({ type: INCREASE_BY, payload: 10 });
+store.dispatch({ type: DECREASE_BY, payload: 5 });
