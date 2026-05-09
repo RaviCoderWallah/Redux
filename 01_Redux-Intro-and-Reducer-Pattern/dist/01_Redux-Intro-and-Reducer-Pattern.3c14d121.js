@@ -749,7 +749,7 @@ function reducer(state = initialState, { type, payload }) {
             return state;
     }
 }
-let store = (0, _redux.createStore)(reducer);
+let store = (0, _redux.createStore)(reducer, window.__REDUX_DEVTOOLS_EXTENSION__?.());
 console.log(store);
 store.subscribe(()=>{
     console.log(store.getState());

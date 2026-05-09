@@ -22,7 +22,7 @@ function reducer(state = initialState, { type, payload }) {
   }
 }
 
-let store = createStore(reducer);
+let store = createStore(reducer, window. __REDUX_DEVTOOLS_EXTENSION__?.());
 
 console.log(store);
 
