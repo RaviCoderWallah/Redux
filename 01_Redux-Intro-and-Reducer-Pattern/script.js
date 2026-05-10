@@ -22,13 +22,24 @@ function reducer(state = initialState, { type, payload }) {
   }
 }
 
-let store = createStore(reducer, window. __REDUX_DEVTOOLS_EXTENSION__?.());
+let store = createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__?.());
 
 console.log(store);
 
-store.subscribe(() => {
+//subscibe returns unscribe funtions, which stops subscribe exceution
+const subscribe1 = store.subscribe(() => {
   console.log(store.getState());
 });
 
+const subscribe2 = store.subscribe(() => {
+  console.log("hello");
+});
+
 store.dispatch({ type: INCREASE_BY, payload: 10 });
+subscribe2();
+
 store.dispatch({ type: DECREASE_BY, payload: 5 });
+store.dispatch({ type: INCREASE_BY, payload: 20 });
+subscribe1();
+
+store.dispatch({ type: DECREASE_BY, payload: 15 });
