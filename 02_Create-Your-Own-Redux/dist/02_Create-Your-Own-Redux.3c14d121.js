@@ -714,10 +714,8 @@ function hmrAccept(bundle /*: ParcelRequire */ , id /*: string */ ) {
 }
 
 },{}],"kTBnD":[function(require,module,exports,__globalThis) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 var _redux = require("redux");
 var _myRedux = require("./my-redux");
-var _myReduxDefault = parcelHelpers.interopDefault(_myRedux);
 const initialState = {
     count: 0,
     counterName: "Timer"
@@ -726,8 +724,8 @@ const INCREMENT = "post/increment";
 const DECREMENT = "post/decrement";
 const INCREASE_BY = "post/incrementBy";
 const DECREASE_BY = "post/decrementBy";
-const reducer = (state = initialState, { type, payload })=>{
-    switch(type){
+const reducer = (state = initialState, action)=>{
+    switch(action.type){
         case INCREMENT:
             return {
                 ...state,
@@ -741,33 +739,44 @@ const reducer = (state = initialState, { type, payload })=>{
         case INCREASE_BY:
             return {
                 ...state,
-                count: state.count + payload
+                count: state.count + action.payload
             };
         case DECREASE_BY:
             return {
                 ...state,
-                count: state.count + payload
+                count: state.count - action.payload
             };
         default:
             return state;
     }
 };
 const store = (0, _redux.createStore)(reducer);
-const myStore = (0, _myReduxDefault.default)();
+const myStore = (0, _myRedux.myCreateStore)(reducer);
 console.log(store);
 console.log(myStore);
-store.subscribe(()=>{
-    console.log(store.getState());
+const subscribe1 = myStore.subscribe(()=>{
+    console.log(myStore.getState());
 });
-store.dispatch({
+const subscribe2 = myStore.subscribe(()=>{
+    console.log("Hello");
+});
+myStore.dispatch({
     type: INCREMENT
 });
-store.dispatch({
+subscribe2();
+myStore.dispatch({
+    type: INCREASE_BY,
+    payload: 20
+});
+myStore.dispatch({
+    type: INCREMENT
+});
+myStore.dispatch({
     type: INCREASE_BY,
     payload: 20
 });
 
-},{"redux":"7RvxM","./my-redux":"1T9yH","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}],"7RvxM":[function(require,module,exports,__globalThis) {
+},{"redux":"7RvxM","./my-redux":"1T9yH"}],"7RvxM":[function(require,module,exports,__globalThis) {
 // src/utils/formatProdErrorMessage.ts
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
@@ -1108,9 +1117,31 @@ exports.export = function(dest, destName, get) {
 },{}],"1T9yH":[function(require,module,exports,__globalThis) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "default", ()=>myCreateStore);
-function myCreateStore() {
-    const store = {};
+parcelHelpers.export(exports, "myCreateStore", ()=>myCreateStore);
+function myCreateStore(reducer) {
+    let state;
+    let listeners = [];
+    const store = {
+        getState () {
+            return state;
+        },
+        dispatch (action) {
+            state = reducer(state, action);
+            listeners.forEach((listener)=>{
+                listener();
+            });
+        },
+        subscribe (listener) {
+            listeners.push(listener);
+            return function() {
+                const listenerIndex = listeners.findIndex((registeredListener)=>registeredListener === listener);
+                listeners.splice(listenerIndex, 1);
+            };
+        }
+    };
+    store.dispatch({
+        type: "@@init"
+    });
     return store;
 }
 

@@ -1,38 +1,44 @@
 import { createStore } from "redux";
-import myCreateStore from "./my-redux";
+import { myCreateStore } from "./my-redux";
 
-
-const initialState = {count: 0, counterName: "Timer"};
-
+const initialState = { count: 0, counterName: "Timer" };
 const INCREMENT = "post/increment";
 const DECREMENT = "post/decrement";
 const INCREASE_BY = "post/incrementBy";
 const DECREASE_BY = "post/decrementBy";
 
-const reducer = (state = initialState, {type, payload}) => {
-    switch (type) {
+const reducer = (state = initialState, action) => {
+  switch (action.type) {
     case INCREMENT:
       return { ...state, count: state.count + 1 };
     case DECREMENT:
       return { ...state, count: state.count - 1 };
     case INCREASE_BY:
-      return { ...state, count: state.count + payload };
+      return { ...state, count: state.count + action.payload };
     case DECREASE_BY:
-      return { ...state, count: state.count + payload };
+      return { ...state, count: state.count - action.payload };
     default:
       return state;
   }
-}
+};
 
 const store = createStore(reducer);
-const myStore = myCreateStore();
+const myStore = myCreateStore(reducer);
 
 console.log(store);
 console.log(myStore);
 
-store.subscribe(() => {
-    console.log(store.getState());
-})
+const subscribe1 = myStore.subscribe(() => {
+  console.log(myStore.getState());
+});
 
-store.dispatch({type: INCREMENT});
-store.dispatch({type: INCREASE_BY, payload: 20});
+const subscribe2 = myStore.subscribe(() => {
+  console.log("Hello");
+});
+
+myStore.dispatch({ type: INCREMENT });
+subscribe2();
+
+myStore.dispatch({ type: INCREASE_BY, payload: 20 });
+myStore.dispatch({ type: INCREMENT });
+myStore.dispatch({ type: INCREASE_BY, payload: 20 });
