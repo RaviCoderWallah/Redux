@@ -1,0 +1,17 @@
+{
+  "name": "02_create-your-own-redux",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "redux": "^5.0.1"
+  },
+  "devDependencies": {
+    "parcel": "^2.16.4"
+  }
+}
