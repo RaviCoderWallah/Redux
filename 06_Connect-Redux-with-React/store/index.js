@@ -18,7 +18,7 @@ const reducer = combineReducers({
   whishList: whishListReducer,
 });
 
-const store = createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__?.());
+export const store = createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__?.());
 
 store.dispatch(cartAddItems(1));
 store.dispatch(cartAddItems(2));
