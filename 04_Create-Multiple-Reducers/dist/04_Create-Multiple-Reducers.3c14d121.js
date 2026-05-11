@@ -723,7 +723,22 @@ var _cartReducerJs = require("./cartReducer.js");
 var _cartReducerJsDefault = parcelHelpers.interopDefault(_cartReducerJs);
 var _whishListReducerJs = require("./whishListReducer.js");
 var _whishListReducerJsDefault = parcelHelpers.interopDefault(_whishListReducerJs);
-const reducer = (0, _redux.combineReducers)({
+//Make it own combine Reducers
+function combineReducers(reducers) {
+    const reducerKeys = Object.keys(reducers);
+    return function(state = {}, action) {
+        const nextState = {};
+        for(let i = 0; i < reducerKeys.length; i++){
+            const key = reducerKeys[i];
+            const reducer = reducers[key];
+            const previousStateForKey = state[key];
+            const nextStateForKey = reducer(previousStateForKey, action);
+            nextState[key] = nextStateForKey;
+        }
+        return nextState;
+    };
+}
+const reducer = combineReducers({
     productList: (0, _productsReducerJsDefault.default),
     cartItems: (0, _cartReducerJsDefault.default),
     whishList: (0, _whishListReducerJsDefault.default)
