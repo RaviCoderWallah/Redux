@@ -5,49 +5,65 @@ const CART_INCREASE_QUNATITY = "cart/increaseQuantity";
 const CART_DECREASE_QUNATITY = "cart/decreaseQuantity";
 
 //Action Creators
-export function cartAddItems(productID, quantity = 1) {
+export function cartAddItems(productData) {
   return {
     type: CART_ADD_ITEMS,
-    payload: { productID, quantity },
+    payload: productData,
   };
 }
 
-export function cartRemoveItems(productID) {
-  return { type: CART_REMOVE_ITEMS, payload: productID };
+export function cartRemoveItems(productId) {
+  return { type: CART_REMOVE_ITEMS, payload: productId };
 }
 
-export function cartIncreaseQuantity(productID) {
-  return { type: CART_INCREASE_QUNATITY, payload: productID };
+export function cartIncreaseQuantity(productId) {
+  return { type: CART_INCREASE_QUNATITY, payload: productId };
 }
 
-export function cartDecreaseQuantity(productID) {
-  return { type: CART_DECREASE_QUNATITY, payload: productID };
+export function cartDecreaseQuantity(productId) {
+  return { type: CART_DECREASE_QUNATITY, payload: productId };
 }
 
 //Reducer
 export default function cartReducer(state = [], action) {
   switch (action.type) {
-    case CART_ADD_ITEMS:
-      return [...state, action.payload];
+    case CART_ADD_ITEMS: {
+      const isExist = state.find(
+        (item) => item.productId === action.payload.productId,
+      );
+
+      if (isExist) {
+        return state.map((cartItem) => {
+          if (cartItem.productId === isExist.productId) {
+            return { ...cartItem, quantity: cartItem.quantity + 1 };
+          }
+          return cartItem;
+        });
+      }
+
+      return [...state, { ...action.payload, quantity: 1 }];
+    }
 
     case CART_REMOVE_ITEMS:
-      return state.filter((item) => item.productID !== action.payload);
+      return state.filter((item) => item.productId !== action.payload);
 
     case CART_INCREASE_QUNATITY:
       return state.map((item) => {
-        if (item.productID === action.payload) {
+        if (item.productId === action.payload) {
           return { ...item, quantity: item.quantity + 1 };
         }
         return item;
       });
 
     case CART_DECREASE_QUNATITY:
-      return state.map((item) => {
-        if (item.productID === action.payload) {
-          return { ...item, quantity: item.quantity - 1 };
-        }
-        return item;
-      });
+      return state
+        .map((item) => {
+          if (item.productId === action.payload) {
+            return { ...item, quantity: item.quantity - 1 };
+          }
+          return item;
+        })
+        .filter((cartItem) => cartItem.quantity > 0);
     default:
       return state;
   }

@@ -5,6 +5,7 @@ import { store } from "./store";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Home from "./pages/Home";
 import Cart from "./pages/Cart";
+import WhishList from "./pages/WhishList";
 
 const router = createBrowserRouter([
   {
@@ -18,6 +19,10 @@ const router = createBrowserRouter([
       {
         path: "/cart",
         element: <Cart />,
+      },
+      {
+        path: "/whishlist",
+        element: <WhishList />,
       },
     ],
   },
