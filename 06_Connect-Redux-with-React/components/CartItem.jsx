@@ -2,7 +2,7 @@ import { useDispatch } from "../react-redux";
 import {
   cartDecreaseQuantity,
   cartIncreaseQuantity,
-} from "../store/cartReducer";
+} from "../store/slices/cartSlice";
 
 export default function CartItem({
   productId,

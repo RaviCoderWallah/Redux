@@ -1,6 +1,6 @@
 import { useDispatch } from "../react-redux";
-import { cartAddItems } from "../store/cartReducer";
-import { whishListAddItem } from "../store/whishListReducer";
+import { cartAddItems } from "../store/slices/cartSlice";
+import { whishListAddItem } from "../store/slices/whishListSlice";
 
 export default function Product({ productId, title, rating, price, imageUrl }) {
   const dispatch = useDispatch();

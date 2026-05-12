@@ -1,5 +1,5 @@
 import { useDispatch } from "../react-redux";
-import { whishListRemoveItem } from "../store/whishListReducer";
+import { whishListRemoveItem } from "../store/slices/whishListSlice";
 
 export default function WhishListItem({
   productId,
