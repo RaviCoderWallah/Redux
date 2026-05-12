@@ -1,11 +1,16 @@
 import { useDispatch } from "react-redux";
 import { cartAddItems } from "../store/cartReducer";
+import { whishListAddItem } from "../store/whishListReducer";
 
 export default function Product({ productId, title, rating, price, imageUrl }) {
   const dispatch = useDispatch();
 
   const handleAddToCart = () => {
     dispatch(cartAddItems({ productId, title, rating, price, imageUrl }));
+  };
+
+  const handleAddToWishList = () => {
+    dispatch(whishListAddItem({ productId, title, rating, price, imageUrl }));
   };
 
   return (
@@ -24,7 +29,7 @@ export default function Product({ productId, title, rating, price, imageUrl }) {
       </div>
       <div className="cta-container">
         <button onClick={handleAddToCart}>Add to Cart</button>
-        <button>Add WishList</button>
+        <button onClick={handleAddToWishList}>Add WishList</button>
       </div>
     </div>
   );

@@ -3,8 +3,8 @@ const WISHLIST_ADD_ITEM = "wishList/addItem";
 const WISHLIST_REMOVE_ITEM = "wishList/removeItem";
 
 //Action Creators
-export function whishListAddItem(productId) {
-  return { type: WISHLIST_ADD_ITEM, payload: { productId } };
+export function whishListAddItem(productData) {
+  return { type: WISHLIST_ADD_ITEM, payload: productData };
 }
 
 export function whishListRemoveItem(productId) {
@@ -15,7 +15,14 @@ export function whishListRemoveItem(productId) {
 export default function whishListReducer(state = [], action) {
   switch (action.type) {
     case WISHLIST_ADD_ITEM:
-      return [...state, action.payload];
+      const isExist = state.find(
+        (wishListItem) => wishListItem.productId === action.payload.productId,
+      );
+      if (isExist) {
+        return [...state];
+      } else {
+        return [...state, action.payload];
+      }
 
     case WISHLIST_REMOVE_ITEM:
       return state.filter(

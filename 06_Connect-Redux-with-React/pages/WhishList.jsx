@@ -11,9 +11,10 @@ export default function WhishList() {
           <div className="cart-item">Item</div>
           <div className="item-price">Price</div>
         </div>
-        {whishList?.map(({ title, rating, price, imageUrl }) => (
+        {whishList?.map(({ productId, title, rating, price, imageUrl }) => (
           <WhishListItem
             key={productId}
+            productId={productId}
             title={title}
             price={price}
             imageUrl={imageUrl}
