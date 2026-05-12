@@ -1,4 +1,4 @@
-import { useSelector } from "react-redux";
+import { useSelector } from "../react-redux";
 import Product from "../components/Product";
 
 export default function Home() {

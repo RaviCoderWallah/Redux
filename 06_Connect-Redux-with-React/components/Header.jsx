@@ -1,4 +1,4 @@
-import { useSelector } from "react-redux";
+import { useSelector } from "../react-redux";
 import { Link } from "react-router-dom";
 import CartIcon from "url:../assets/cart-icon.svg";
 import WhishListIcon from "url:../assets/heart.svg";
