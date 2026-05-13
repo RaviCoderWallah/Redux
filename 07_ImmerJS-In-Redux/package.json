@@ -1,0 +1,24 @@
+{
+  "name": "07_ImmerJS-In-Redux",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "parcel index.html"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "parcel": "^2.16.4"
+  },
+  "dependencies": {
+    "immer": "^11.1.8",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
+    "react-redux": "^9.2.0",
+    "react-router": "^6.30.3",
+    "react-router-dom": "^6.30.3",
+    "redux": "^5.0.1"
+  }
+}
