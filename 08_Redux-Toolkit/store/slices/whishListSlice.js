@@ -1,34 +1,31 @@
-//Action Types
-const WISHLIST_ADD_ITEM = "wishList/addItem";
-const WISHLIST_REMOVE_ITEM = "wishList/removeItem";
+import { createSlice } from "@reduxjs/toolkit";
 
-//Action Creators
-export function whishListAddItem(productData) {
-  return { type: WISHLIST_ADD_ITEM, payload: productData };
+function findExistingItem(state, action) {
+  return state.findIndex(
+    (state) => state.productId === action.payload.productId,
+  );
 }
 
-export function whishListRemoveItem(productId) {
-  return { type: WISHLIST_REMOVE_ITEM, payload: { productId } };
-}
-
-//Reducer
-export default function whishListReducer(state = [], action) {
-  switch (action.type) {
-    case WISHLIST_ADD_ITEM:
-      const isExist = state.find(
-        (wishListItem) => wishListItem.productId === action.payload.productId,
-      );
-      if (isExist) {
-        return [...state];
+const slice = createSlice({
+  name: "wishList",
+  initialState: [],
+  reducers: {
+    whishListAddItem(state, action) {
+      const existingIndex = findExistingItem(state, action);
+      if (state[existingIndex]) {
+        state;
       } else {
-        return [...state, action.payload];
+        state.push(action.payload);
       }
+    },
+    whishListRemoveItem(state, action) {
+      const existingIndex = findExistingItem(state, action);
+      state.splice(existingIndex, 1);
+    },
+  },
+});
 
-    case WISHLIST_REMOVE_ITEM:
-      return state.filter(
-        (wishListItem) => wishListItem.productId !== action.payload.productId,
-      );
-    default:
-      return state;
-  }
-}
+console.log(slice);
+
+export const { whishListAddItem, whishListRemoveItem } = slice.actions;
+export default slice.reducer;

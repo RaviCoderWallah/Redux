@@ -11,7 +11,7 @@ export default function WhishListItem({
   const dispatch = useDispatch();
 
   const handleRemoveWishList = () => {
-    dispatch(whishListRemoveItem(productId));
+    dispatch(whishListRemoveItem({ productId }));
   };
 
   return (
