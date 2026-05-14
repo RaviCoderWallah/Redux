@@ -1,10 +1,15 @@
 import { useSelector } from "react-redux";
 import Product from "../components/Product";
+import {
+  getAllProducts,
+  getProductError,
+  getProductLoading,
+} from "../store/slices/productsSlice";
 
 export default function Home() {
-  const productsList = useSelector((state) => state.productList.list);
-  const isLoading = useSelector((state) => state.productList.loading);
-  const isError = useSelector((state) => state.productList.error);
+  const productsList = useSelector(getAllProducts);
+  const isLoading = useSelector(getProductLoading);
+  const isError = useSelector(getProductError);
 
   return isLoading ? (
     <h1 style={{ textAlign: "center", fontSize: "40px" }}>Loading...</h1>

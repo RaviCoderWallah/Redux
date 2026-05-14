@@ -1,15 +1,9 @@
 import { useSelector } from "react-redux";
 import CartItem from "../components/CartItem";
+import { getAllCartItems } from "../store/slices/cartSlice";
 
 export default function Cart() {
-  const cartItems = useSelector(({ productList, cartItems }) => {
-    return cartItems.map(({ productId, quantity }) => {
-      const cartProduct = productList.list.find(
-        (product) => product.id === productId,
-      );
-      return { ...cartProduct, quantity };
-    });
-  });
+  const cartItems = useSelector(getAllCartItems);
 
   const totalAmount = cartItems.reduce((accumulator, currentItem) => {
     return accumulator + currentItem.price * currentItem.quantity;
