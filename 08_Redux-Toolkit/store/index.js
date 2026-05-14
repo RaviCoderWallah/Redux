@@ -2,14 +2,8 @@ import productsReducer from "./slices/productsSlice.js";
 import cartReducer from "./slices/cartSlice.js";
 import whishListReducer from "./slices/whishListSlice.js";
 import { configureStore } from "@reduxjs/toolkit";
-
-function logger(store) {
-  return function (next) {
-    return function (action) {
-      next(action);
-    };
-  };
-}
+import { logger } from "./middleware/logger.js";
+import { apiMiddleware } from "./middleware/api.js";
 
 export const store = configureStore({
   reducer: {
@@ -17,5 +11,5 @@ export const store = configureStore({
     cartItems: cartReducer,
     whishList: whishListReducer,
   },
-  middleware: () => [logger],
+  middleware: () => [apiMiddleware],
 });
