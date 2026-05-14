@@ -1,4 +1,4 @@
-import { useSelector } from "../react-redux";
+import { useSelector } from "react-redux";
 import WhishListItem from "../components/WishListItem";
 
 export default function WhishList() {

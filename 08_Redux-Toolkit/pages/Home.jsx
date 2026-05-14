@@ -1,10 +1,13 @@
-import { useSelector } from "../react-redux";
+import { useSelector } from "react-redux";
 import Product from "../components/Product";
 
 export default function Home() {
-  const productsList = useSelector((state) => state.productList);
+  const productsList = useSelector((state) => state.productList.list);
+  const isLoading = useSelector((state) => state.productList.loading);
 
-  return (
+  return isLoading ? (
+    <h1 style={{ textAlign: "center", fontSize: "40px" }}>Loading...</h1>
+  ) : (
     <div className="products-container">
       {productsList?.map(({ id, title, rating, price, image }) => (
         <Product

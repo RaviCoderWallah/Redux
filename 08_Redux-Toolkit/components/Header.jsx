@@ -1,7 +1,13 @@
-import { useSelector } from "../react-redux";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import CartIcon from "url:../assets/cart-icon.svg";
 import WhishListIcon from "url:../assets/heart.svg";
+import {
+  fetchProducts,
+  updateAllProducts,
+} from "../store/slices/productsSlice";
+// import { productList } from "../store/productsDataList";
 
 export default function Header() {
   const cartItems = useSelector((state) => state.cartItems);
@@ -9,6 +15,19 @@ export default function Header() {
   const totalQuantity = cartItems.reduce((accumulator, currentItem) => {
     return accumulator + currentItem.quantity;
   }, 0);
+
+  //Fetching Products Data
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchProducts());
+    async function fetchingProduct() {
+      const response = await fetch("https://fakestoreapi.com/products");
+      const data = await response.json();
+      dispatch(updateAllProducts(data));
+    }
+    fetchingProduct();
+  }, []);
+
   return (
     <header>
       <div className="header-contents">

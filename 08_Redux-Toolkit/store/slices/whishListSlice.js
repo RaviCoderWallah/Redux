@@ -25,7 +25,5 @@ const slice = createSlice({
   },
 });
 
-console.log(slice);
-
 export const { whishListAddItem, whishListRemoveItem } = slice.actions;
 export default slice.reducer;
