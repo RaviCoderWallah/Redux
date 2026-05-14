@@ -8,6 +8,7 @@ import {
   fetchProductsError,
   updateAllProducts,
 } from "../store/slices/productsSlice";
+import { fetchData } from "../store/middleware/api";
 // import { productList } from "../store/productsDataList";
 
 export default function Header() {
@@ -20,26 +21,14 @@ export default function Header() {
   //Fetching Products Data
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch({
-      type: "api/makeCall",
-      payload: {
+    dispatch(
+      fetchData({
         url: "products",
         onSuccess: updateAllProducts.type,
         onStart: fetchProducts.type,
         onError: fetchProductsError.type,
-      },
-    });
-    // dispatch(fetchProducts());
-    // async function fetchingProduct() {
-    //   try {
-    //     const response = await fetch("https://fakestoreapi.com/products");
-    //     const data = await response.json();
-    //     dispatch(updateAllProducts(data));
-    //   } catch (error) {
-    //     dispatch(fetchProductsError());
-    //   }
-    // }
-    // fetchingProduct();
+      }),
+    );
   }, []);
 
   return (
