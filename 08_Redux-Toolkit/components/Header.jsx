@@ -5,6 +5,7 @@ import CartIcon from "url:../assets/cart-icon.svg";
 import WhishListIcon from "url:../assets/heart.svg";
 import {
   fetchProducts,
+  fetchProductsError,
   updateAllProducts,
 } from "../store/slices/productsSlice";
 // import { productList } from "../store/productsDataList";
@@ -21,9 +22,13 @@ export default function Header() {
   useEffect(() => {
     dispatch(fetchProducts());
     async function fetchingProduct() {
-      const response = await fetch("https://fakestoreapi.com/products");
-      const data = await response.json();
-      dispatch(updateAllProducts(data));
+      try {
+        const response = await fetch("https://fakestoreapi.com/products");
+        const data = await response.json();
+        dispatch(updateAllProducts(data));
+      } catch (error) {
+        dispatch(fetchProductsError());
+      }
     }
     fetchingProduct();
   }, []);
