@@ -3,14 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import CartIcon from "url:../assets/cart-icon.svg";
 import WhishListIcon from "url:../assets/heart.svg";
-import {
-  fetchProducts,
-  fetchProductsData,
-  fetchProductsError,
-  updateAllProducts,
-} from "../store/slices/productsSlice";
-// import { fetchData } from "../store/middleware/api";
-// import { productList } from "../store/productsDataList";
+import { fetchProductsData } from "../store/slices/productsSlice";
 
 export default function Header() {
   const cartItems = useSelector((state) => state.cartItems);
