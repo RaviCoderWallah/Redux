@@ -7,22 +7,22 @@
     },
     {
       "value": "Make Redux Projects",
-      "completed": false,
+      "completed": true,
       "id": 2
     },
     {
       "value": "Learn React Query",
-      "completed": false,
+      "completed": true,
       "id": 3
     },
     {
       "value": "Lear Zod Form Validation",
-      "completed": false,
+      "completed": true,
       "id": 4
     },
     {
       "value": "Learn Firebase",
-      "completed": false,
+      "completed": true,
       "id": 5
     }
   ]
