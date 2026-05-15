@@ -1,0 +1,29 @@
+{
+  "tasks": [
+    {
+      "value": "Complete Redux ",
+      "completed": true,
+      "id": 1
+    },
+    {
+      "value": "Make Redux Projects",
+      "completed": false,
+      "id": 2
+    },
+    {
+      "value": "Learn React Query",
+      "completed": false,
+      "id": 3
+    },
+    {
+      "value": "Lear Zod Form Validation",
+      "completed": false,
+      "id": 4
+    },
+    {
+      "value": "Learn Firebase",
+      "completed": false,
+      "id": 5
+    }
+  ]
+}
