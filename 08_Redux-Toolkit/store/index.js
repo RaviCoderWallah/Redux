@@ -11,5 +11,5 @@ export const store = configureStore({
     cartItems: cartReducer,
     whishList: whishListReducer,
   },
-  middleware: () => [apiMiddleware],
+  // middleware: (getDefaultMiddleware) => [...getDefaultMiddleware],
 });

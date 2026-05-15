@@ -34,7 +34,19 @@ export const getProductLoading = (state) => state.productList.loading;
 export const getProductError = (state) => state.productList.error;
 // ===========>>>>>>>>>>
 
-export const { fetchProducts, fetchProductsError, updateAllProducts } =
-  slice.actions;
+const { fetchProducts, fetchProductsError, updateAllProducts } = slice.actions;
+
+// Thunk Action Creator
+export const fetchProductsData = () => (dispatch) => {
+  dispatch(fetchProducts());
+  fetch(`https://fakestoreapi.com/products`)
+    .then((res) => res.json())
+    .then((data) => {
+      dispatch(updateAllProducts(data));
+    })
+    .catch(() => {
+      dispatch(fetchProductsError());
+    });
+};
 
 export default slice.reducer;

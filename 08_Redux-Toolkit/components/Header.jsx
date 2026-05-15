@@ -5,10 +5,11 @@ import CartIcon from "url:../assets/cart-icon.svg";
 import WhishListIcon from "url:../assets/heart.svg";
 import {
   fetchProducts,
+  fetchProductsData,
   fetchProductsError,
   updateAllProducts,
 } from "../store/slices/productsSlice";
-import { fetchData } from "../store/middleware/api";
+// import { fetchData } from "../store/middleware/api";
 // import { productList } from "../store/productsDataList";
 
 export default function Header() {
@@ -21,14 +22,7 @@ export default function Header() {
   //Fetching Products Data
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(
-      fetchData({
-        url: "products",
-        onSuccess: updateAllProducts.type,
-        onStart: fetchProducts.type,
-        onError: fetchProductsError.type,
-      }),
-    );
+    dispatch(fetchProductsData());
   }, []);
 
   return (
