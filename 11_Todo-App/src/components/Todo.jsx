@@ -11,12 +11,7 @@ const Todo = ({ todoData }) => {
   const [isEdit, setIsEdit] = useState(false);
   const [todoEditValue, setTodoEditValue] = useState(todoData.todoTitle);
 
-  const handleTodoEdit = () => {
-    setIsEdit(true);
-  };
-
-  const handleSaveTodo = (id) => {
-    console.log(id);
+  const saveTodo = (id) => {
     setIsEdit(false);
     dispatch(editTodo({ todoId: id, editedValue: todoEditValue }));
   };
@@ -39,6 +34,11 @@ const Todo = ({ todoData }) => {
           type="text"
           className="outline-1 outline-violet-500 pl-2 rounded-sm"
           value={todoEditValue}
+          onKeyDown={(e) => {
+            if (e.key == "Enter") {
+              saveTodo(todoData.id);
+            }
+          }}
           onChange={(e) => setTodoEditValue(e.target.value)}
         />
       )}
@@ -46,14 +46,14 @@ const Todo = ({ todoData }) => {
       <div className="flex items-center gap-2">
         {!isEdit ? (
           <button
-            onClick={() => handleTodoEdit()}
+            onClick={() => setIsEdit(true)}
             className="bg-green-700 text-white opacity-90 rounded-sm px-4 py-1 cursor-pointer hover:bg-green-600"
           >
             Edit
           </button>
         ) : (
           <button
-            onClick={() => handleSaveTodo(todoData.id)}
+            onClick={() => saveTodo(todoData.id)}
             className="bg-green-700 text-white opacity-90 rounded-sm px-4 py-1 cursor-pointer hover:bg-green-600"
           >
             Save

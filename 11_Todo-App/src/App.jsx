@@ -3,6 +3,7 @@ import Todo from "./components/Todo";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addNewTodo,
+  deleteTodo,
   getTodoList,
   selectAll,
   unselectAll,
@@ -17,17 +18,33 @@ const App = () => {
   const [activeStatus, setActiveStatus] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
 
-  //When Submit Todo
-  const handleSubmitTodo = () => {
-    if (todoValue !== "") {
-      const newTodo = {
-        id: crypto.randomUUID(),
-        todoTitle: todoValue,
-        isCompleted: false,
-      };
-      dispatch(addNewTodo(newTodo));
-      setTodoValue("");
-    }
+  // Count how many todos are completed
+  const completedCount = todoList.filter(
+    (todo) => todo.isCompleted === true,
+  ).length;
+
+  // Clear all completed todos
+  const handleClearCompleted = () => {
+    todoList.forEach((todo) => {
+      if (todo.isCompleted === true) {
+        dispatch(deleteTodo({ todoId: todo.id }));
+      }
+    });
+  };
+
+  //Save in localStorage all data
+  useEffect(() => {
+    localStorage.setItem("todoList", JSON.stringify(todoList));
+  }, [todoList]);
+
+  const todoData = () => {
+    const newTodo = {
+      id: crypto.randomUUID(),
+      todoTitle: todoValue,
+      isCompleted: false,
+    };
+    dispatch(addNewTodo(newTodo));
+    setTodoValue("");
   };
 
   //When click on select all button
@@ -69,12 +86,8 @@ const App = () => {
     return true;
   });
 
-  const handleSearchTodo = (e) => {
-    setSearchQuery(e.target.value);
-  };
-
   return (
-    <main className="font-poppins bg-violet-600 min-h-screen flex items-center justify-center">
+    <main className="font-poppins bg-violet-600 min-h-screen md:px-0 px-2 flex items-center justify-center">
       <div className="bg-white max-w-xl w-full rounded-sm p-4">
         <h1 className="text-3xl text-gray-800 text-center font-semibold mb-6">
           Today's Tasks
@@ -86,10 +99,19 @@ const App = () => {
             placeholder="Add an item..."
             className="outline-1 outline-grey-500 rounded-sm px-2 py-1"
             value={todoValue}
+            onKeyDown={(e) => {
+              if (e.key == "Enter") {
+                todoData();
+              }
+            }}
             onChange={(e) => setTodoValue(e.target.value)}
           />
           <button
-            onClick={handleSubmitTodo}
+            onClick={() => {
+              if (todoValue !== "") {
+                todoData();
+              }
+            }}
             className="bg-violet-700 text-white rounded-sm px-4 py-1 cursor-pointer hover:bg-violet-600"
           >
             Submit
@@ -102,7 +124,7 @@ const App = () => {
             placeholder="Search item..."
             className="outline-1 w-full outline-grey-500 rounded-sm px-2 py-1"
             value={searchQuery}
-            onChange={handleSearchTodo}
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
         {/* Todo's Status  */}
@@ -129,9 +151,10 @@ const App = () => {
         {/* Clear completed  */}
         <div className="my-4 flex items-center gap-4 justify-self-center">
           <button
-            className={`${false ? "bg-violet-600 text-white cursor-pointer" : "text-white bg-gray-400 cursor-not-allowed"} rounded-sm px-4 py-1 `}
+            onClick={handleClearCompleted}
+            className={`${completedCount > 0 ? "bg-violet-600 text-white cursor-pointer" : "text-white bg-gray-400 cursor-not-allowed"} rounded-sm px-4 py-1 `}
           >
-            Clear Completed (0)
+            Clear Completed ({completedCount})
           </button>
         </div>
         {/* Select All  */}
@@ -152,12 +175,19 @@ const App = () => {
             </button>
           )}
         </div>
-        {/* Todo List  */}
-        <div className="px-4 flex flex-col gap-4">
-          {[...filteredTodoList].reverse().map((todo) => {
-            return <Todo key={todo.id} todoData={todo} />;
-          })}
-        </div>
+        {todoList.length === 0 ? (
+          <div className="flex items-center justfiy-center min-h-30 w-full bg-gray-100">
+            <p className="text-2xl font-semibold text-gray-700 text-center mx-auto">
+              No tasks found.
+            </p>
+          </div>
+        ) : (
+          <div className="px-4 flex flex-col gap-4">
+            {[...filteredTodoList].reverse().map((todo) => {
+              return <Todo key={todo.id} todoData={todo} />;
+            })}
+          </div>
+        )}
       </div>
     </main>
   );
