@@ -15,7 +15,9 @@ const App = () => {
   const [todoValue, setTodoValue] = useState("");
   const [isAllSelected, setIsAllSelected] = useState(false);
   const [activeStatus, setActiveStatus] = useState("All");
+  const [searchQuery, setSearchQuery] = useState("");
 
+  //When Submit Todo
   const handleSubmitTodo = () => {
     if (todoValue !== "") {
       const newTodo = {
@@ -28,34 +30,48 @@ const App = () => {
     }
   };
 
+  //When click on select all button
   const handleSelectAll = () => {
     setIsAllSelected(true);
     dispatch(selectAll());
   };
 
+  //When click on unselect all button
   const handleUnSelectAll = () => {
     setIsAllSelected(false);
     dispatch(unselectAll());
   };
 
-  const handleActiveTodo = () => {
-    setActiveStatus("Active");
-  };
-
-  const handleCompletedTodo = () => {
-    setActiveStatus("Completed");
-  };
-
   const getBtnClx = (status) => {
     const isActive = activeStatus === status;
-    return `${isActive ? "bg-violet-700 text-white hover:bg-violet-600" : "bg-gray-300 text-gray-800 hover:bg-gray-400"}  rounded-sm px-4 py-1 cursor-pointer`;
+    return `${
+      isActive
+        ? "bg-violet-700 text-white hover:bg-violet-600"
+        : "bg-gray-300 text-gray-800 hover:bg-gray-400"
+    }
+      rounded-sm px-4 py-1 cursor-pointer`;
   };
 
   const filteredTodoList = todoList.filter((todo) => {
-    if (activeStatus === "Active") return !todo.isCompleted;
-    if (activeStatus === "Completed") return todo.isCompleted;
+    // Filter by status
+    if (activeStatus === "Active") {
+      if (todo.isCompleted == true) return false;
+    } else if (activeStatus === "Completed") {
+      if (todo.isCompleted == false) return false;
+    }
+
+    // Filter by search query
+    if (searchQuery.trim() !== "") {
+      if (!todo.todoTitle.toLowerCase().includes(searchQuery.toLowerCase())) {
+        return false;
+      }
+    }
     return true;
   });
+
+  const handleSearchTodo = (e) => {
+    setSearchQuery(e.target.value);
+  };
 
   return (
     <main className="font-poppins bg-violet-600 min-h-screen flex items-center justify-center">
@@ -85,6 +101,8 @@ const App = () => {
             type="text"
             placeholder="Search item..."
             className="outline-1 w-full outline-grey-500 rounded-sm px-2 py-1"
+            value={searchQuery}
+            onChange={handleSearchTodo}
           />
         </div>
         {/* Todo's Status  */}
@@ -95,11 +113,14 @@ const App = () => {
           >
             All
           </button>
-          <button onClick={handleActiveTodo} className={getBtnClx("Active")}>
+          <button
+            onClick={() => setActiveStatus("Active")}
+            className={getBtnClx("Active")}
+          >
             Active
           </button>
           <button
-            onClick={handleCompletedTodo}
+            onClick={() => setActiveStatus("Completed")}
             className={getBtnClx("Completed")}
           >
             Completed
