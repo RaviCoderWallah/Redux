@@ -16,6 +16,12 @@ const slice = createSlice({
     editTodo(state, action) {
       const todo = state.find((todo) => todo.id === action.payload.todoId);
       if (todo) {
+        todo.todoTitle = action.payload.editedValue;
+      }
+    },
+    editCompletedStatus(state, action) {
+      const todo = state.find((todo) => todo.id === action.payload.todoId);
+      if (todo) {
         todo.isCompleted = !todo.isCompleted;
       }
     },
@@ -33,8 +39,9 @@ export const getTodoList = (state) => state.todo;
 
 export const {
   addNewTodo,
-  deleteTodo,
   editTodo,
+  deleteTodo,
+  editCompletedStatus,
   selectAll,
   unselectAll,
 } = slice.actions;
